@@ -14,6 +14,7 @@ public class Menu {
     }
 
     public void menu() {
+        service.loadData();
         boolean keepGoing = true;
         while (keepGoing) {
             System.out.println("===============================================");
@@ -21,6 +22,8 @@ public class Menu {
             System.out.println("Digite a opção desejada para: ");
             System.out.println("1 - Consultar trechos disponíveis");
             System.out.println("2 - Consultar modalidade de transporte");
+            System.out.println("3 - Selecionar origem e destino do transporte");
+            System.out.println("4 - Selecionar modalidade de transporte");
             System.out.println("===============================================");
             int chosenOption = sc.nextInt();
             sc.nextLine();

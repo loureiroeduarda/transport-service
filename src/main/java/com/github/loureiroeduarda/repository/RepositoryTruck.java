@@ -1,5 +1,7 @@
 package com.github.loureiroeduarda.repository;
 
+import com.github.loureiroeduarda.model.LargeTruck;
+import com.github.loureiroeduarda.model.MediumTruck;
 import com.github.loureiroeduarda.model.SmallTruck;
 import com.github.loureiroeduarda.model.Truck;
 
@@ -13,7 +15,16 @@ public class RepositoryTruck {
         this.truckList = new ArrayList<>();
     }
 
-    public void addTruck(Truck truck) {
-        this.truckList.add(truck);
+    public List<Truck> listAll() {
+        return this.truckList;
+    }
+
+    public void saveTrucks() {
+        Truck truckSmall = new SmallTruck();
+        Truck truckMedium = new MediumTruck();
+        Truck truckLarge = new LargeTruck();
+        this.truckList.add(truckSmall);
+        this.truckList.add(truckMedium);
+        this.truckList.add(truckLarge);
     }
 }

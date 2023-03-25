@@ -1,27 +1,28 @@
 package com.github.loureiroeduarda.service;
 
-import com.github.loureiroeduarda.csv.ReadCsv;
-import com.github.loureiroeduarda.model.LargeTruck;
-import com.github.loureiroeduarda.model.MediumTruck;
-import com.github.loureiroeduarda.model.SmallTruck;
 import com.github.loureiroeduarda.model.Truck;
+import com.github.loureiroeduarda.repository.RepositoryCsv;
 import com.github.loureiroeduarda.repository.RepositoryTruck;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class Service {
-    private final ReadCsv readCsv;
+    private final RepositoryCsv repositoryCsv;
+    private final RepositoryTruck repositoryTruck;
 
     public Service() {
-        this.readCsv = new ReadCsv();
+        this.repositoryCsv = new RepositoryCsv();
+        this.repositoryTruck = new RepositoryTruck();
     }
 
-    public void RepositoryTruck(){
-        RepositoryTruck repositoryTruck = new RepositoryTruck();
+    public void loadData() {
+        this.repositoryCsv.loadCitiesDistances();
+        this.repositoryTruck.saveTrucks();
     }
 
     public void printCities() {
-        List<String[]> csvFile = readCsv.read();
+        List<String[]> csvFile = repositoryCsv.getCsvReader();
         String[] header = csvFile.get(0);
         String[] cities = header[0].split(";");
         for (int i = 0; i < cities.length; i++) {
@@ -29,13 +30,20 @@ public class Service {
         }
     }
 
-    public void printTrucks(){
-        Truck truckSmall = new SmallTruck();
-        Truck truckMedium = new MediumTruck();
-        Truck truckLarge = new LargeTruck();
-        System.out.println(truckSmall);
-        System.out.println(truckMedium);
-        System.out.println(truckLarge);
+    public void printTrucks() {
+        List<Truck> truckList = repositoryTruck.listAll();
+        for (Truck truck : truckList) {
+            System.out.println(truck);
+        }
+
+    }
+
+    public void registerCities(Scanner sc) {
+        System.out.println("Digite o número correspondente à cidade de origem: ");
+        String cityOrigin = sc.nextLine();
+        System.out.println("Digite o número correspondente à cidade de destino: ");
+        String cityDestination = sc.nextLine();
+
     }
 
 }
