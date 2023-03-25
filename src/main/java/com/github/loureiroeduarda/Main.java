@@ -1,11 +1,11 @@
 package com.github.loureiroeduarda;
 
-import com.github.loureiroeduarda.csv.ReadCsv;
+import com.github.loureiroeduarda.menu.Menu;
 
 public class Main {
     public static void main(String[] args) {
-        ReadCsv readCsv = new ReadCsv();
+        Menu menu = new Menu();
 
-        readCsv.read();
+        menu.menu();
     }
 }
