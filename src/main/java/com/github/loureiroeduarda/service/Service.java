@@ -32,18 +32,51 @@ public class Service {
 
     public void printTrucks() {
         List<Truck> truckList = repositoryTruck.listAll();
-        for (Truck truck : truckList) {
-            System.out.println(truck);
+        for (int i = 0; i < truckList.size(); i++) {
+            System.out.println(i + " - " + truckList.get(i));
         }
 
     }
 
-    public void registerCities(Scanner sc) {
-        System.out.println("Digite o número correspondente à cidade de origem: ");
-        String cityOrigin = sc.nextLine();
-        System.out.println("Digite o número correspondente à cidade de destino: ");
-        String cityDestination = sc.nextLine();
+    public void deliveryRoute(Scanner sc) {
+        System.out.println("Digite o número [0 à 23] correspondente à cidade de origem: ");
+        int cityOrigin = sc.nextInt();
+        validateCityId(cityOrigin, sc);
+        System.out.println("Digite o número [0 à 23] correspondente à cidade de destino: ");
+        int cityDestination = sc.nextInt();
+        validateCityId(cityDestination, sc);
+        System.out.println("Digite o número [0 à 2] correspondente ao porte do caminhão [pequeno, médio e grande]: ");
+        int truckId = sc.nextInt();
+        validateTruckId(truckId, sc);
 
+        Truck truck = repositoryTruck.getTruckById(truckId);
+        String distance = repositoryCsv.findDistance(cityOrigin, cityDestination);
+
+        System.out.println("A distância entre " + repositoryCsv.printCityById(cityOrigin) + " e "
+                + repositoryCsv.printCityById(cityDestination)
+                + " é " + distance + " km. " + "O custo do transporte, utilizando-se um caminhão de "
+                + truck.getTruckType() + " é R$ " + shippingCost(truck, distance));
+    }
+
+    private int validateCityId(int index, Scanner sc) {
+        while (index < 0 || index >= 24) {
+            System.out.println("Este número não corresponde a nenhuma cidade cadastrada! Tente novamente!");
+            index = sc.nextInt();
+        }
+        return index;
+    }
+
+    private int validateTruckId(int index, Scanner sc) {
+        while (index < 0 || index >= 3) {
+            System.out.println("Este número não corresponde ao porte dos caminhões cadastrados! Tente novamente!");
+            index = sc.nextInt();
+        }
+        return index;
+    }
+
+    private Double shippingCost(Truck truck, String distance) {
+        int distanceNumber = Integer.parseInt(distance);
+        return distanceNumber * truck.getPriceKm();
     }
 
 }

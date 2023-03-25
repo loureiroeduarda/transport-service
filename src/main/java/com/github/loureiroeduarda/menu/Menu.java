@@ -22,8 +22,7 @@ public class Menu {
             System.out.println("Digite a opção desejada para: ");
             System.out.println("1 - Consultar trechos disponíveis");
             System.out.println("2 - Consultar modalidade de transporte");
-            System.out.println("3 - Selecionar origem e destino do transporte");
-            System.out.println("4 - Selecionar modalidade de transporte");
+            System.out.println("3 - Selecionar origem, destino e modalidade do transporte");
             System.out.println("===============================================");
             int chosenOption = sc.nextInt();
             sc.nextLine();
@@ -33,6 +32,9 @@ public class Menu {
                     break;
                 case 2:
                     service.printTrucks();
+                    break;
+                case 3:
+                    service.deliveryRoute(sc);
                     break;
                 case 0:
                     keepGoing = false;

@@ -22,4 +22,23 @@ public class RepositoryCsv {
         return csvReader;
     }
 
+    public String findDistance(int cityOrigin, int cityDestination) {
+        List<String[]> csvFile = getCsvReader();
+        String distanceBetweenCities = "";
+        for (String[] line : csvFile) {
+            String[] distances = line[0].split(";");
+            if (distances[cityOrigin].equals("0")) {
+                distanceBetweenCities = distances[cityDestination];
+            }
+        }
+        return distanceBetweenCities;
+    }
+
+    public String printCityById(int index) {
+        List<String[]> csvFile = getCsvReader();
+        String[] header = csvFile.get(0);
+        String[] cities = header[0].split(";");
+        return cities[index];
+    }
+
 }

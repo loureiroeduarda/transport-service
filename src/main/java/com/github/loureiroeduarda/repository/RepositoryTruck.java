@@ -27,4 +27,8 @@ public class RepositoryTruck {
         this.truckList.add(truckMedium);
         this.truckList.add(truckLarge);
     }
+
+    public Truck getTruckById(int index) {
+        return truckList.get(index);
+    }
 }
