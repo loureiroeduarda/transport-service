@@ -1,7 +1,11 @@
 package com.github.loureiroeduarda;
 
+import com.github.loureiroeduarda.csv.ReadCsv;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        ReadCsv readCsv = new ReadCsv();
+
+        readCsv.read();
     }
 }
