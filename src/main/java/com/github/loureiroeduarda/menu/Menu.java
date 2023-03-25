@@ -28,6 +28,9 @@ public class Menu {
                 case 1:
                     service.printCities();
                     break;
+                case 2:
+                    service.printTrucks();
+                    break;
                 case 0:
                     keepGoing = false;
                     break;
