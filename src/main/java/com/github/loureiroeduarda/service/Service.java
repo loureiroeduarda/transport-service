@@ -2,6 +2,7 @@ package com.github.loureiroeduarda.service;
 
 import com.github.loureiroeduarda.model.Truck;
 import com.github.loureiroeduarda.repository.RepositoryCsv;
+import com.github.loureiroeduarda.repository.RepositoryProducts;
 import com.github.loureiroeduarda.repository.RepositoryTruck;
 
 import java.util.List;
@@ -11,9 +12,12 @@ public class Service {
     private final RepositoryCsv repositoryCsv;
     private final RepositoryTruck repositoryTruck;
 
+    private final RepositoryProducts repositoryProducts;
+
     public Service() {
         this.repositoryCsv = new RepositoryCsv();
         this.repositoryTruck = new RepositoryTruck();
+        this.repositoryProducts = new RepositoryProducts();
     }
 
     public void loadData() {
