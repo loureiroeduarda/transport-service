@@ -1,6 +1,6 @@
 package com.github.loureiroeduarda.service;
 
-import com.github.loureiroeduarda.model.products.Products;
+import com.github.loureiroeduarda.model.products.*;
 import com.github.loureiroeduarda.model.truck.Truck;
 import com.github.loureiroeduarda.repository.RepositoryCsv;
 import com.github.loureiroeduarda.repository.RepositoryProducts;
@@ -117,5 +117,30 @@ public class Service {
         return totalDistance;
     }
 
+    public Double calculateTotalWeight(Cargo cargo) {
+        List<Products> productsList = repositoryProducts.listAll();
 
+        double totalCargoWeight = 0.0;
+        for(Products product : productsList) {
+            if(product instanceof CellPhone) {
+                totalCargoWeight += product.getWeightProduct() * cargo.getCellPhoneCounter();
+            }
+            if(product instanceof Refrigerator) {
+                totalCargoWeight += product.getWeightProduct() * cargo.getRefrigeratorCounter();
+            }
+            if(product instanceof Freezer) {
+                totalCargoWeight += product.getWeightProduct() * cargo.getFreezerCounter();
+            }
+            if(product instanceof Chair) {
+                totalCargoWeight += product.getWeightProduct() * cargo.getChairCounter();
+            }
+            if(product instanceof Lighting) {
+                totalCargoWeight += product.getWeightProduct() * cargo.getLightingCounter();
+            }
+            if(product instanceof WashingMachine) {
+                totalCargoWeight += product.getWeightProduct() * cargo.getWashingMachineCounter();
+            }
+        }
+        return totalCargoWeight;
+    }
 }

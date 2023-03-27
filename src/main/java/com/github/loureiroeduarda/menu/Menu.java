@@ -1,5 +1,6 @@
 package com.github.loureiroeduarda.menu;
 
+import com.github.loureiroeduarda.model.products.Cargo;
 import com.github.loureiroeduarda.repository.RepositoryProducts;
 import com.github.loureiroeduarda.service.Service;
 
@@ -77,7 +78,9 @@ public class Menu {
         System.out.println("Digite a quantidade de lavadoras de roupa que deseja transportar: ");
         int washingMachineCounter = sc.nextInt();
 
-
+        Cargo cargo = new Cargo(cellPhoneCounter, refrigeratorCounter, freezerCounter, chairCounter, lightingCounter,
+                washingMachineCounter);
+        service.calculateTotalWeight(cargo);
     }
 
     private int validateCityCounter(int number, Scanner sc) {
