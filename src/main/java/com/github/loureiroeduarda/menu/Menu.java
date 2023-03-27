@@ -1,7 +1,6 @@
 package com.github.loureiroeduarda.menu;
 
 import com.github.loureiroeduarda.model.products.Cargo;
-import com.github.loureiroeduarda.repository.RepositoryProducts;
 import com.github.loureiroeduarda.service.Service;
 
 import java.util.ArrayList;
@@ -51,6 +50,8 @@ public class Menu {
             }
         }
     }
+    //TODO: Criar submenu de rotas, removendo da Service
+    public void deliveryRouteMenu(Scanner sc) {}
 
     public void registerTransportMenu(Scanner sc) {
         System.out.println("Informe quantas cidades deseja cadastrar para realização do transporte: ");
@@ -58,11 +59,12 @@ public class Menu {
         sc.nextLine();
         validateCityCounter(cityCounter, sc);
         List<String> chosenCities = new ArrayList<>();
-        for(int i = 0; i < cityCounter; i++) {
+        for (int i = 0; i < cityCounter; i++) {
             System.out.println("Digite o número correspondente à cidade desejada: ");
             String cityCode = sc.nextLine();
             chosenCities.add(cityCode);
         }
+
         System.out.println("Produtos disponíveis para transporte: ");
         service.printProducts();
         System.out.println("Digite a quantidade de celulares que deseja transportar: ");
@@ -78,9 +80,28 @@ public class Menu {
         System.out.println("Digite a quantidade de lavadoras de roupa que deseja transportar: ");
         int washingMachineCounter = sc.nextInt();
 
-        Cargo cargo = new Cargo(cellPhoneCounter, refrigeratorCounter, freezerCounter, chairCounter, lightingCounter,
-                washingMachineCounter);
-        service.calculateTotalWeight(cargo);
+        Cargo cargo = new Cargo(cellPhoneCounter, refrigeratorCounter, freezerCounter,
+                chairCounter, lightingCounter, washingMachineCounter);
+
+        String cities = service.findCitiesNames(chosenCities);
+        Double totalDistance = service.totalDistance(service.findingRouteDistance(chosenCities));
+        Double totalCargoWeight = service.calculateTotalWeight(cargo);
+        String products = service.findProductsNames(cargo);
+        Double totalTransportValue = service.totalTransportValue(totalDistance);
+
+        System.out.println("Os trechos selecionados foram: " + cities + ".");
+        System.out.println("O total da distância a ser percorrida é de: " + totalDistance + "km");
+        System.out.println("O peso total dos produtos transportados é de: " + totalCargoWeight + "km");
+        System.out.println("Para transportes os produtos: " + products + ", " + "será necessária a utilização ");
+        System.out.println("O valor total do transporte cadastrado é de R$ " + totalTransportValue + ", sendo que R$ ");
+
+        /* TODO: Finalizar o print abaixo
+       Os trechos selecionados foram: Porto Alegre, São Paulo e Cuiaba. O total da distância a ser percorrida é de X km.
+       Para transportar os produtos, X, Y e Z será necessária a utilização de dois caminhões de porte pequeno, de forma
+       a resultar o menor custo de transporte por km rodado.
+       O valor total do transporte cadastrado é de R$ xxx, sendo que R$ xxxx corresponde ao custo unitário médio.
+       */
+
     }
 
     private int validateCityCounter(int number, Scanner sc) {
@@ -90,7 +111,5 @@ public class Menu {
         }
         return number;
     }
-
-
 
 }

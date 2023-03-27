@@ -34,7 +34,7 @@ public class RepositoryCsv {
         return distanceBetweenCities;
     }
 
-    public String printCityById(int index) {
+    public String getCityById(int index) {
         List<String[]> csvFile = getCsvReader();
         String[] header = csvFile.get(0);
         String[] cities = header[0].split(";");
