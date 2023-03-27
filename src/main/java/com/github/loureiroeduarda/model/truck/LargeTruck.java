@@ -1,4 +1,4 @@
-package com.github.loureiroeduarda.model;
+package com.github.loureiroeduarda.model.truck;
 
 public class LargeTruck implements Truck{
 

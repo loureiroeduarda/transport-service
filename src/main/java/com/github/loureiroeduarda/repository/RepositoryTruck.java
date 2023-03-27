@@ -1,9 +1,9 @@
 package com.github.loureiroeduarda.repository;
 
-import com.github.loureiroeduarda.model.LargeTruck;
-import com.github.loureiroeduarda.model.MediumTruck;
-import com.github.loureiroeduarda.model.SmallTruck;
-import com.github.loureiroeduarda.model.Truck;
+import com.github.loureiroeduarda.model.truck.LargeTruck;
+import com.github.loureiroeduarda.model.truck.MediumTruck;
+import com.github.loureiroeduarda.model.truck.SmallTruck;
+import com.github.loureiroeduarda.model.truck.Truck;
 
 import java.util.ArrayList;
 import java.util.List;

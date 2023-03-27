@@ -1,9 +1,9 @@
-package com.github.loureiroeduarda.model;
+package com.github.loureiroeduarda.model.truck;
 
-public class MediumTruck implements Truck{
-    private final String truckType = "médio porte";
-    private final Double priceKm = 11.92;
-    private final int weight = 4000;
+public class SmallTruck implements Truck{
+    private final String truckType = "pequeno porte";
+    private final Double priceKm = 4.87;
+    private final int weight = 1000;
 
     @Override
     public String getTruckType() {

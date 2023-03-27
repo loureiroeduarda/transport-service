@@ -1,17 +1,19 @@
 package com.github.loureiroeduarda.service;
 
-import com.github.loureiroeduarda.model.Truck;
+import com.github.loureiroeduarda.model.products.Products;
+import com.github.loureiroeduarda.model.truck.Truck;
 import com.github.loureiroeduarda.repository.RepositoryCsv;
 import com.github.loureiroeduarda.repository.RepositoryProducts;
 import com.github.loureiroeduarda.repository.RepositoryTruck;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Service {
     private final RepositoryCsv repositoryCsv;
     private final RepositoryTruck repositoryTruck;
-
     private final RepositoryProducts repositoryProducts;
 
     public Service() {
@@ -23,6 +25,7 @@ public class Service {
     public void loadData() {
         this.repositoryCsv.loadCitiesDistances();
         this.repositoryTruck.saveTrucks();
+        this.repositoryProducts.saveProducts();
     }
 
     public void printCities() {
@@ -39,7 +42,13 @@ public class Service {
         for (int i = 0; i < truckList.size(); i++) {
             System.out.println(i + " - " + truckList.get(i));
         }
+    }
 
+    public void printProducts() {
+        List<Products> productsList = repositoryProducts.listAll();
+        for(int i = 0; i < productsList.size(); i++) {
+            System.out.println(productsList.get(i));
+        }
     }
 
     public void deliveryRoute(Scanner sc) {
@@ -82,5 +91,31 @@ public class Service {
         int distanceNumber = Integer.parseInt(distance);
         return distanceNumber * truck.getPriceKm();
     }
+
+    public List<String> findingRouteDistance(List<String> chosenCities) {
+        List<String> listDistances = new ArrayList<>();
+        List<String[]> csvFile = repositoryCsv.getCsvReader();
+
+        for (String[] line : csvFile) {
+            String[] distances = line[0].split(";");
+            if (distances[Integer.parseInt(chosenCities.get(0))].equals("0")) {
+                for (String chosenCity : chosenCities) {
+                    listDistances.add(distances[Integer.parseInt(chosenCity)]);
+                }
+            }
+        }
+        return listDistances;
+    }
+
+    public Double totalDistance(List<String> listDistance) {
+        List<Double> distance = listDistance.stream().map(Double::parseDouble).toList();
+
+        double totalDistance = 0.0;
+        for (Double i : distance) {
+            totalDistance =+ i;
+        }
+        return totalDistance;
+    }
+
 
 }

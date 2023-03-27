@@ -1,4 +1,4 @@
-package com.github.loureiroeduarda.model;
+package com.github.loureiroeduarda.model.products;
 
 public class Freezer implements Products{
 
@@ -18,7 +18,7 @@ public class Freezer implements Products{
 
     @Override
     public String toString() {
-        return "Produto: " + productType +
-               "Peso do produto: " + weightProduct;
+        return productType +
+               " - Peso do produto: " + weightProduct;
     }
 }

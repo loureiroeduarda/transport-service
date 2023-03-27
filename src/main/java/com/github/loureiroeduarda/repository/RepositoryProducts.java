@@ -1,6 +1,6 @@
 package com.github.loureiroeduarda.repository;
 
-import com.github.loureiroeduarda.model.*;
+import com.github.loureiroeduarda.model.products.*;
 
 import java.util.ArrayList;
 import java.util.List;
