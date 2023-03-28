@@ -1,24 +1,31 @@
 package com.github.loureiroeduarda.service;
 
-import com.github.loureiroeduarda.model.Truck;
+import com.github.loureiroeduarda.model.products.*;
+import com.github.loureiroeduarda.model.truck.BestTruckCombo;
+import com.github.loureiroeduarda.model.truck.Truck;
 import com.github.loureiroeduarda.repository.RepositoryCsv;
+import com.github.loureiroeduarda.repository.RepositoryProducts;
 import com.github.loureiroeduarda.repository.RepositoryTruck;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Service {
     private final RepositoryCsv repositoryCsv;
     private final RepositoryTruck repositoryTruck;
+    private final RepositoryProducts repositoryProducts;
 
     public Service() {
         this.repositoryCsv = new RepositoryCsv();
         this.repositoryTruck = new RepositoryTruck();
+        this.repositoryProducts = new RepositoryProducts();
     }
 
     public void loadData() {
         this.repositoryCsv.loadCitiesDistances();
         this.repositoryTruck.saveTrucks();
+        this.repositoryProducts.saveProducts();
     }
 
     public void printCities() {
@@ -35,7 +42,13 @@ public class Service {
         for (int i = 0; i < truckList.size(); i++) {
             System.out.println(i + " - " + truckList.get(i));
         }
+    }
 
+    public void printProducts() {
+        List<Products> productsList = repositoryProducts.listAll();
+        for (Products products : productsList) {
+            System.out.println(products);
+        }
     }
 
     public void deliveryRoute(Scanner sc) {
@@ -52,8 +65,8 @@ public class Service {
         Truck truck = repositoryTruck.getTruckById(truckId);
         String distance = repositoryCsv.findDistance(cityOrigin, cityDestination);
 
-        System.out.println("A distância entre " + repositoryCsv.printCityById(cityOrigin) + " e "
-                + repositoryCsv.printCityById(cityDestination)
+        System.out.println("A distância entre " + repositoryCsv.getCityById(cityOrigin) + " e "
+                + repositoryCsv.getCityById(cityDestination)
                 + " é " + distance + " km. " + "O custo do transporte, utilizando-se um caminhão de "
                 + truck.getTruckType() + " é R$ " + shippingCost(truck, distance));
     }
@@ -79,4 +92,112 @@ public class Service {
         return distanceNumber * truck.getPriceKm();
     }
 
+    public List<String> findingRouteDistance(List<String> chosenCities) {
+        List<String> listDistances = new ArrayList<>();
+        List<String[]> csvFile = repositoryCsv.getCsvReader();
+
+        for (String[] line : csvFile) {
+            String[] distances = line[0].split(";");
+            if (distances[Integer.parseInt(chosenCities.get(0))].equals("0")) {
+                for (String chosenCity : chosenCities) {
+                    listDistances.add(distances[Integer.parseInt(chosenCity)]);
+                }
+            }
+        }
+        return listDistances;
+    }
+
+    public Double totalDistance(List<String> listDistance) {
+        List<Double> distance = listDistance.stream().map(Double::parseDouble).toList();
+
+        double totalDistance = 0.0;
+        for (Double i : distance) {
+            totalDistance = +i;
+        }
+        return totalDistance;
+    }
+
+    public Double calculateTotalWeight(Cargo cargo) {
+        List<Products> productsList = repositoryProducts.listAll();
+
+        double totalCargoWeight = 0.0;
+        for (Products product : productsList) {
+            if (product instanceof CellPhone) {
+                totalCargoWeight += product.getWeightProduct() * cargo.getCellPhoneCounter();
+            }
+            if (product instanceof Refrigerator) {
+                totalCargoWeight += product.getWeightProduct() * cargo.getRefrigeratorCounter();
+            }
+            if (product instanceof Freezer) {
+                totalCargoWeight += product.getWeightProduct() * cargo.getFreezerCounter();
+            }
+            if (product instanceof Chair) {
+                totalCargoWeight += product.getWeightProduct() * cargo.getChairCounter();
+            }
+            if (product instanceof Lighting) {
+                totalCargoWeight += product.getWeightProduct() * cargo.getLightingCounter();
+            }
+            if (product instanceof WashingMachine) {
+                totalCargoWeight += product.getWeightProduct() * cargo.getWashingMachineCounter();
+            }
+        }
+        return totalCargoWeight;
+    }
+
+    public BestTruckCombo bestTruckCombo(Double totalCargoWeight) {
+        BestTruckCombo bestTruckCombo = new BestTruckCombo();
+        List<Truck> truckList = repositoryTruck.listAll();
+
+        for (Truck truck : truckList) {
+            double assistantCalculation = (totalCargoWeight / truck.getWeight()) * truck.getPriceKm();
+            if (assistantCalculation < bestTruckCombo.getBestCost()) {
+                bestTruckCombo.setBestCost(assistantCalculation);
+                bestTruckCombo.setTruckType(truck.getTruckType());
+                bestTruckCombo.setQuantityTrucks(totalCargoWeight / truck.getWeight());
+            }
+        }
+        return bestTruckCombo;
+    }
+
+    public Double totalTransportValue(BestTruckCombo bestTruckCombo, Double totalDistance) {
+        return totalDistance * bestTruckCombo.getBestCost();
+    }
+
+    public Double averageShippingCost(BestTruckCombo bestTruckCombo, Double totalTransportValue) {
+        return totalTransportValue / bestTruckCombo.getQuantityTrucks();
+    }
+
+    public String findCitiesNames(List<String> chosenCities) {
+        StringBuilder cities = new StringBuilder();
+        for (String city : chosenCities) {
+            cities.append(repositoryCsv.getCityById(Integer.parseInt(city))).append(" ");
+        }
+        return cities.toString();
+    }
+
+    public String findProductsNames(Cargo cargo) {
+        List<Products> productsList = repositoryProducts.listAll();
+        List<String> products = new ArrayList<>();
+        for (Products product : productsList) {
+            if (product instanceof CellPhone && cargo.getCellPhoneCounter() > 0) {
+                products.add(product.productType());
+            }
+            if (product instanceof Refrigerator && cargo.getRefrigeratorCounter() > 0) {
+                products.add(product.productType());
+            }
+            if (product instanceof Freezer && cargo.getFreezerCounter() > 0) {
+                products.add(product.productType());
+            }
+            if (product instanceof Chair && cargo.getChairCounter() > 0) {
+                products.add(product.productType());
+            }
+            if (product instanceof Lighting && cargo.getLightingCounter() > 0) {
+                products.add(product.productType());
+            }
+            if (product instanceof WashingMachine && cargo.getWashingMachineCounter() > 0) {
+                products.add(product.productType());
+            }
+        }
+        return products.toString();
+    }
 }

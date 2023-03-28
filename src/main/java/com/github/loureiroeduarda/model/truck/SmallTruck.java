@@ -1,6 +1,6 @@
-package com.github.loureiroeduarda.model;
+package com.github.loureiroeduarda.model.truck;
 
-public class SmallTruck implements Truck{
+public class SmallTruck implements Truck {
     private final String truckType = "pequeno porte";
     private final Double priceKm = 4.87;
     private final int weight = 1000;
