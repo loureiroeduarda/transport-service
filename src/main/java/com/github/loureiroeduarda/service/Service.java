@@ -1,6 +1,7 @@
 package com.github.loureiroeduarda.service;
 
 import com.github.loureiroeduarda.model.products.*;
+import com.github.loureiroeduarda.model.truck.BestTruckCombo;
 import com.github.loureiroeduarda.model.truck.Truck;
 import com.github.loureiroeduarda.repository.RepositoryCsv;
 import com.github.loureiroeduarda.repository.RepositoryProducts;
@@ -143,20 +144,28 @@ public class Service {
         return totalCargoWeight;
     }
 
-    /* TODO: Construir a magia em forma de código
-    public String bestTruckCombo(Double totalCargoWeight) {
-        if(totalCargoWeight <= 1000) {
-            return "um caminhão de porte pequeno";
-        }
+    public BestTruckCombo bestTruckCombo(Double totalCargoWeight) {
+        BestTruckCombo bestTruckCombo = new BestTruckCombo();
         List<Truck> truckList = repositoryTruck.listAll();
-    }*/
 
-    //TODO: Método será alterado com a implementação do método bestTruckCombo
-    public Double totalTransportValue(Double totalDistance) {
-        return totalDistance * repositoryTruck.getTruckById(0).getPriceKm();
+        for (Truck truck : truckList) {
+            double assistantCalculation = (totalCargoWeight / truck.getWeight()) * truck.getPriceKm();
+            if (assistantCalculation < bestTruckCombo.getBestCost()) {
+                bestTruckCombo.setBestCost(assistantCalculation);
+                bestTruckCombo.setTruckType(truck.getTruckType());
+                bestTruckCombo.setQuantityTrucks(totalCargoWeight / truck.getWeight());
+            }
+        }
+        return bestTruckCombo;
     }
 
-    //TODO: Implementar método do custo médio
+    public Double totalTransportValue(BestTruckCombo bestTruckCombo, Double totalDistance) {
+        return totalDistance * bestTruckCombo.getBestCost();
+    }
+
+    public Double averageShippingCost(BestTruckCombo bestTruckCombo, Double totalTransportValue) {
+        return totalTransportValue / bestTruckCombo.getQuantityTrucks();
+    }
 
     public String findCitiesNames(List<String> chosenCities) {
         StringBuilder cities = new StringBuilder();
@@ -168,30 +177,27 @@ public class Service {
 
     public String findProductsNames(Cargo cargo) {
         List<Products> productsList = repositoryProducts.listAll();
-        StringBuilder products = new StringBuilder();
+        List<String> products = new ArrayList<>();
         for (Products product : productsList) {
             if (product instanceof CellPhone && cargo.getCellPhoneCounter() > 0) {
-                products.append(product.productType());
+                products.add(product.productType());
             }
             if (product instanceof Refrigerator && cargo.getRefrigeratorCounter() > 0) {
-                products.append(product.productType());
+                products.add(product.productType());
             }
             if (product instanceof Freezer && cargo.getFreezerCounter() > 0) {
-                products.append(product.productType());
+                products.add(product.productType());
             }
             if (product instanceof Chair && cargo.getChairCounter() > 0) {
-                products.append(product.productType());
+                products.add(product.productType());
             }
             if (product instanceof Lighting && cargo.getLightingCounter() > 0) {
-                products.append(product.productType());
+                products.add(product.productType());
             }
             if (product instanceof WashingMachine && cargo.getWashingMachineCounter() > 0) {
-                products.append(product.productType());
+                products.add(product.productType());
             }
         }
         return products.toString();
     }
-
-
-
 }

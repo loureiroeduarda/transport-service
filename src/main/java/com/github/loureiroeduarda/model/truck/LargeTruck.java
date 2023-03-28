@@ -1,6 +1,6 @@
 package com.github.loureiroeduarda.model.truck;
 
-public class LargeTruck implements Truck{
+public class LargeTruck implements Truck {
 
     private final String truckType = "grande porte";
     private final Double priceKm = 27.44;

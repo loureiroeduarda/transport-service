@@ -1,6 +1,6 @@
 package com.github.loureiroeduarda.model.products;
 
-public class Freezer implements Products{
+public class Freezer implements Products {
 
     private final String productType = "Freezer";
 
@@ -19,6 +19,6 @@ public class Freezer implements Products{
     @Override
     public String toString() {
         return productType +
-               " - Peso do produto: " + weightProduct;
+                " - Peso do produto: " + weightProduct;
     }
 }

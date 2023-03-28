@@ -1,6 +1,6 @@
 package com.github.loureiroeduarda.model.products;
 
-public class Chair implements Products{
+public class Chair implements Products {
 
     private final String productType = "Cadeira";
 
@@ -19,6 +19,6 @@ public class Chair implements Products{
     @Override
     public String toString() {
         return productType +
-               " - Peso do produto: " + weightProduct;
+                " - Peso do produto: " + weightProduct;
     }
 }

@@ -1,6 +1,7 @@
 package com.github.loureiroeduarda.menu;
 
 import com.github.loureiroeduarda.model.products.Cargo;
+import com.github.loureiroeduarda.model.truck.BestTruckCombo;
 import com.github.loureiroeduarda.service.Service;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class Menu {
             System.out.println("2 - Consultar modalidade de transporte");
             System.out.println("3 - Selecionar origem, destino e modalidade do transporte");
             System.out.println("4 - Cadastrar transporte/frete");
+            System.out.println("0 - Encerrar o sistema");
             System.out.println("===============================================");
             int chosenOption = sc.nextInt();
             sc.nextLine();
@@ -42,6 +44,7 @@ public class Menu {
                     break;
                 case 4:
                     registerTransportMenu(sc);
+                    break;
                 case 0:
                     keepGoing = false;
                     break;
@@ -50,8 +53,6 @@ public class Menu {
             }
         }
     }
-    //TODO: Criar submenu de rotas, removendo da Service
-    public void deliveryRouteMenu(Scanner sc) {}
 
     public void registerTransportMenu(Scanner sc) {
         System.out.println("Informe quantas cidades deseja cadastrar para realização do transporte: ");
@@ -87,21 +88,18 @@ public class Menu {
         Double totalDistance = service.totalDistance(service.findingRouteDistance(chosenCities));
         Double totalCargoWeight = service.calculateTotalWeight(cargo);
         String products = service.findProductsNames(cargo);
-        Double totalTransportValue = service.totalTransportValue(totalDistance);
+        BestTruckCombo bestTruckCombo = service.bestTruckCombo(totalCargoWeight);
+        Double totalTransportValue = service.totalTransportValue(bestTruckCombo, totalDistance);
+        Double averageShippingCost = service.averageShippingCost(bestTruckCombo, totalTransportValue);
 
-        System.out.println("Os trechos selecionados foram: " + cities + ".");
-        System.out.println("O total da distância a ser percorrida é de: " + totalDistance + "km");
-        System.out.println("O peso total dos produtos transportados é de: " + totalCargoWeight + "km");
-        System.out.println("Para transportes os produtos: " + products + ", " + "será necessária a utilização ");
-        System.out.println("O valor total do transporte cadastrado é de R$ " + totalTransportValue + ", sendo que R$ ");
-
-        /* TODO: Finalizar o print abaixo
-       Os trechos selecionados foram: Porto Alegre, São Paulo e Cuiaba. O total da distância a ser percorrida é de X km.
-       Para transportar os produtos, X, Y e Z será necessária a utilização de dois caminhões de porte pequeno, de forma
-       a resultar o menor custo de transporte por km rodado.
-       O valor total do transporte cadastrado é de R$ xxx, sendo que R$ xxxx corresponde ao custo unitário médio.
-       */
-
+        System.out.println("Os trechos selecionados foram: " + cities);
+        System.out.println("O total da distância a ser percorrida é de: " + totalDistance + " km.");
+        System.out.println("O peso total dos produtos a serem transportados é de: " + totalCargoWeight + " kg.");
+        System.out.println("Para transportar os produtos: " + products + ", " + "será necessária a utilização de "
+                + bestTruckCombo.getQuantityTrucks() + " caminhões de " + bestTruckCombo.getTruckType()
+                + ", de forma a resultar o menor custo de transporte por km rodado.");
+        System.out.println("O valor total do transporte cadastrado é de R$ " + totalTransportValue + ", sendo que R$ "
+                + averageShippingCost + " corresponde ao custo unitário médio.");
     }
 
     private int validateCityCounter(int number, Scanner sc) {
@@ -111,5 +109,4 @@ public class Menu {
         }
         return number;
     }
-
 }

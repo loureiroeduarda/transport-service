@@ -1,6 +1,6 @@
 package com.github.loureiroeduarda.model.products;
 
-public class Lighting implements Products{
+public class Lighting implements Products {
 
     private final String productType = "Luminária";
 
@@ -19,6 +19,6 @@ public class Lighting implements Products{
     @Override
     public String toString() {
         return productType +
-               " - Peso do produto: " + weightProduct;
+                " - Peso do produto: " + weightProduct;
     }
 }

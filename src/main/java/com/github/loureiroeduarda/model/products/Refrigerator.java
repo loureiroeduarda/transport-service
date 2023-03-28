@@ -19,6 +19,6 @@ public class Refrigerator implements Products {
     @Override
     public String toString() {
         return productType +
-               " - Peso do produto: " + weightProduct;
+                " - Peso do produto: " + weightProduct;
     }
 }

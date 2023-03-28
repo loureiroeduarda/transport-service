@@ -1,6 +1,6 @@
 package com.github.loureiroeduarda.model.truck;
 
-public class MediumTruck implements Truck{
+public class MediumTruck implements Truck {
     private final String truckType = "médio porte";
     private final Double priceKm = 11.92;
     private final int weight = 4000;

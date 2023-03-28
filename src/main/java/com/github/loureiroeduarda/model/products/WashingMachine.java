@@ -1,6 +1,6 @@
 package com.github.loureiroeduarda.model.products;
 
-public class WashingMachine implements Products{
+public class WashingMachine implements Products {
 
     private final String productType = "Máquina de lavar roupa";
 
@@ -19,6 +19,6 @@ public class WashingMachine implements Products{
     @Override
     public String toString() {
         return productType +
-               " - Peso do produto: " + weightProduct;
+                " - Peso do produto: " + weightProduct;
     }
 }
