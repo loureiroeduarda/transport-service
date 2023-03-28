@@ -30,8 +30,8 @@ public class Menu {
             System.out.println("4 - Cadastrar transporte/frete");
             System.out.println("0 - Encerrar o sistema");
             System.out.println("===============================================");
-            int chosenOption = sc.nextInt();
-            sc.nextLine();
+            String chosenOptionText = sc.nextLine();
+            int chosenOption = convertStringToInt(chosenOptionText);
             switch (chosenOption) {
                 case 1:
                     service.printCities();
@@ -52,6 +52,16 @@ public class Menu {
                     System.out.println("Opção inválida! Tente Novamente!!");
             }
         }
+    }
+
+    private int convertStringToInt(String chosenOption) {
+        int optionInt = Integer.MAX_VALUE;
+        try {
+            optionInt = Integer.parseInt(chosenOption);
+        } catch (NumberFormatException numberFormatException) {
+            System.out.println("Você não digitou um número!!");
+        }
+        return optionInt;
     }
 
     public void registerTransportMenu(Scanner sc) {
