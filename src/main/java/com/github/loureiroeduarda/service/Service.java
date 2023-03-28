@@ -53,14 +53,20 @@ public class Service {
 
     public void deliveryRoute(Scanner sc) {
         System.out.println("Digite o número [0 à 23] correspondente à cidade de origem: ");
-        int cityOrigin = sc.nextInt();
-        validateCityId(cityOrigin, sc);
+        String cityOriginText = sc.nextLine();
+        int cityOrigin = convertStringToInt(cityOriginText);
+        cityOrigin = validateCityId(cityOrigin, sc);
+
         System.out.println("Digite o número [0 à 23] correspondente à cidade de destino: ");
-        int cityDestination = sc.nextInt();
-        validateCityId(cityDestination, sc);
-        System.out.println("Digite o número [0 à 2] correspondente ao porte do caminhão [pequeno, médio e grande]: ");
-        int truckId = sc.nextInt();
-        validateTruckId(truckId, sc);
+        String cityDestinationText = sc.nextLine();
+        int cityDestination = convertStringToInt(cityDestinationText);
+        cityDestination = validateCityId(cityDestination, sc);
+
+        System.out.println("Digite o número [0 à 2] correspondente ao porte do caminhão [0 = pequeno, 1 = médio e " +
+                "2 = grande]: ");
+        String truckIdText = sc.nextLine();
+        int truckId = convertStringToInt(truckIdText);
+        truckId = validateTruckId(truckId, sc);
 
         Truck truck = repositoryTruck.getTruckById(truckId);
         String distance = repositoryCsv.findDistance(cityOrigin, cityDestination);
@@ -71,18 +77,30 @@ public class Service {
                 + truck.getTruckType() + " é R$ " + shippingCost(truck, distance));
     }
 
+    private int convertStringToInt(String cityOriginText) {
+        int optionInt = Integer.MAX_VALUE;
+        try {
+            optionInt = Integer.parseInt(cityOriginText);
+        } catch (NumberFormatException numberFormatException) {
+            System.out.println("Você não digitou um número!!");
+        }
+        return optionInt;
+    }
+
     private int validateCityId(int index, Scanner sc) {
         while (index < 0 || index >= 24) {
-            System.out.println("Este número não corresponde a nenhuma cidade cadastrada! Tente novamente!");
-            index = sc.nextInt();
+            System.out.println("Cidade não existe!! Tente novamente!!");
+            String cityId = sc.nextLine();
+            index = convertStringToInt(cityId);
         }
         return index;
     }
 
     private int validateTruckId(int index, Scanner sc) {
         while (index < 0 || index >= 3) {
-            System.out.println("Este número não corresponde ao porte dos caminhões cadastrados! Tente novamente!");
-            index = sc.nextInt();
+            System.out.println("Modalidade de caminhão não existe!! Tente novamente!!");
+            String truckId = sc.nextLine();
+            index = convertStringToInt(truckId);
         }
         return index;
     }
