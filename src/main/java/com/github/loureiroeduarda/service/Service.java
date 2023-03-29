@@ -1,10 +1,12 @@
 package com.github.loureiroeduarda.service;
 
 import com.github.loureiroeduarda.model.products.*;
+import com.github.loureiroeduarda.model.transport.Transport;
 import com.github.loureiroeduarda.model.truck.BestTruckCombo;
 import com.github.loureiroeduarda.model.truck.Truck;
 import com.github.loureiroeduarda.repository.RepositoryCsv;
 import com.github.loureiroeduarda.repository.RepositoryProducts;
+import com.github.loureiroeduarda.repository.RepositoryTransport;
 import com.github.loureiroeduarda.repository.RepositoryTruck;
 
 import java.util.ArrayList;
@@ -16,10 +18,13 @@ public class Service {
     private final RepositoryTruck repositoryTruck;
     private final RepositoryProducts repositoryProducts;
 
+    private final RepositoryTransport repositoryTransport;
+
     public Service() {
         this.repositoryCsv = new RepositoryCsv();
         this.repositoryTruck = new RepositoryTruck();
         this.repositoryProducts = new RepositoryProducts();
+        this.repositoryTransport = new RepositoryTransport();
     }
 
     public void loadData() {
@@ -225,5 +230,9 @@ public class Service {
             }
         }
         return products.toString();
+    }
+
+    public void saveTransport(Transport transport) {
+        this.repositoryTransport.save(transport);
     }
 }

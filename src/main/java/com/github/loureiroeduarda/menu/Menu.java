@@ -1,6 +1,7 @@
 package com.github.loureiroeduarda.menu;
 
 import com.github.loureiroeduarda.model.products.Cargo;
+import com.github.loureiroeduarda.model.transport.Transport;
 import com.github.loureiroeduarda.model.truck.BestTruckCombo;
 import com.github.loureiroeduarda.service.Service;
 
@@ -119,6 +120,10 @@ public class Menu {
                 + ", de forma a resultar o menor custo de transporte por km rodado.");
         System.out.println("O valor total do transporte cadastrado é de R$ " + totalTransportValue + ", sendo que R$ "
                 + averageShippingCost + " corresponde ao custo unitário médio.");
+
+        Transport transport = new Transport(cities, totalDistance, totalCargoWeight, products, bestTruckCombo, totalTransportValue, averageShippingCost);
+        service.saveTransport(transport);
+        System.out.println("Transporte cadastrado com sucesso!!");
     }
 
     private int validateCityCounter(int number, Scanner sc) {

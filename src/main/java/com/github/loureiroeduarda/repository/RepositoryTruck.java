@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RepositoryTruck {
-    List<Truck> truckList;
+    private List<Truck> truckList;
 
     public RepositoryTruck() {
         this.truckList = new ArrayList<>();
