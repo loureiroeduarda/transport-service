@@ -31,7 +31,7 @@ public class Menu {
             System.out.println("0 - Encerrar o sistema");
             System.out.println("===============================================");
             String chosenOptionText = sc.nextLine();
-            int chosenOption = convertStringToInt(chosenOptionText);
+            int chosenOption = service.convertStringToInt(chosenOptionText);
             switch (chosenOption) {
                 case 1:
                     service.printCities();
@@ -54,42 +54,51 @@ public class Menu {
         }
     }
 
-    private int convertStringToInt(String chosenOption) {
-        int optionInt = Integer.MAX_VALUE;
-        try {
-            optionInt = Integer.parseInt(chosenOption);
-        } catch (NumberFormatException numberFormatException) {
-            System.out.println("Você não digitou um número!!");
-        }
-        return optionInt;
-    }
-
     public void registerTransportMenu(Scanner sc) {
-        System.out.println("Informe quantas cidades deseja cadastrar para realização do transporte: ");
-        int cityCounter = sc.nextInt();
-        sc.nextLine();
-        validateCityCounter(cityCounter, sc);
+        System.out.println("Informe quantas cidades deseja cadastrar para realização do transporte [2 à 23]: ");
+        String cityCounterText = sc.nextLine();
+        int cityCounter = service.convertStringToInt(cityCounterText);
+        cityCounter = validateCityCounter(cityCounter, sc);
+
         List<String> chosenCities = new ArrayList<>();
         for (int i = 0; i < cityCounter; i++) {
-            System.out.println("Digite o número correspondente à cidade desejada: ");
+            System.out.println("Digite o número correspondente à cidade desejada [0 à 23]: ");
             String cityCode = sc.nextLine();
-            chosenCities.add(cityCode);
+            chosenCities.add(String.valueOf(validateCityCode(cityCode, sc)));
         }
 
         System.out.println("Produtos disponíveis para transporte: ");
         service.printProducts();
+
         System.out.println("Digite a quantidade de celulares que deseja transportar: ");
-        int cellPhoneCounter = sc.nextInt();
+        String cellPhoneCounterText = sc.nextLine();
+        int cellPhoneCounter = service.convertStringToInt(cellPhoneCounterText);
+        validateProducts(cellPhoneCounter, sc);
+
         System.out.println("Digite a quantidade de geladeiras que deseja transportar: ");
-        int refrigeratorCounter = sc.nextInt();
+        String refrigeratorCounterText = sc.nextLine();
+        int refrigeratorCounter = service.convertStringToInt(refrigeratorCounterText);
+        validateProducts(refrigeratorCounter, sc);
+
         System.out.println("Digite a quantidade de freezers que deseja transportar: ");
-        int freezerCounter = sc.nextInt();
+        String freezerCounterText = sc.nextLine();
+        int freezerCounter = service.convertStringToInt(freezerCounterText);
+        validateProducts(freezerCounter, sc);
+
         System.out.println("Digite a quantidade de cadeiras que deseja transportar: ");
-        int chairCounter = sc.nextInt();
+        String chairCounterText = sc.nextLine();
+        int chairCounter = service.convertStringToInt(chairCounterText);
+        validateProducts(chairCounter, sc);
+
         System.out.println("Digite a quantidade de luminárias que deseja transportar: ");
-        int lightingCounter = sc.nextInt();
+        String lightingCounterText = sc.nextLine();
+        int lightingCounter = service.convertStringToInt(lightingCounterText);
+        validateProducts(lightingCounter, sc);
+
         System.out.println("Digite a quantidade de lavadoras de roupa que deseja transportar: ");
-        int washingMachineCounter = sc.nextInt();
+        String washingMachineCounterText = sc.nextLine();
+        int washingMachineCounter = service.convertStringToInt(washingMachineCounterText);
+        validateProducts(washingMachineCounter, sc);
 
         Cargo cargo = new Cargo(cellPhoneCounter, refrigeratorCounter, freezerCounter,
                 chairCounter, lightingCounter, washingMachineCounter);
@@ -113,10 +122,30 @@ public class Menu {
     }
 
     private int validateCityCounter(int number, Scanner sc) {
-        while (number < 0 || number >= 24) {
-            System.out.println("Você pode selecionar apenas números de 0 à 23!! Tente novamente!!");
-            number = sc.nextInt();
+        while (number < 2 || number >= 24) {
+            System.out.println("Opção inválida! Tente Novamente!!");
+            String cityCounter = sc.nextLine();
+            number = service.convertStringToInt(cityCounter);
         }
         return number;
+    }
+
+    private int validateProducts(int quantityProducts, Scanner sc) {
+        while (quantityProducts == Integer.MAX_VALUE) {
+            System.out.println("Opção inválida! Tente Novamente!!");
+            String quantityProductsText = sc.nextLine();
+            quantityProducts = service.convertStringToInt(quantityProductsText);
+        }
+        return quantityProducts;
+    }
+
+    private int validateCityCode(String cityCode, Scanner sc) {
+        int cityId = -1;
+        try {
+            cityId = Integer.parseInt(cityCode);
+        } catch (NumberFormatException numberFormatException) {
+            System.out.println("Opção inválida! Tente Novamente!!");
+        }
+        return service.validateCityId(cityId, sc);
     }
 }

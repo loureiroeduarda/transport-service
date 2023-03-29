@@ -77,17 +77,25 @@ public class Service {
                 + truck.getTruckType() + " é R$ " + shippingCost(truck, distance));
     }
 
-    private int convertStringToInt(String cityOriginText) {
+    public int convertStringToInt(String text) {
         int optionInt = Integer.MAX_VALUE;
         try {
-            optionInt = Integer.parseInt(cityOriginText);
+            optionInt = Integer.parseInt(text);
         } catch (NumberFormatException numberFormatException) {
             System.out.println("Você não digitou um número!!");
         }
+        optionInt = validatePositiveNumber(optionInt);
         return optionInt;
     }
 
-    private int validateCityId(int index, Scanner sc) {
+    private int validatePositiveNumber(int number) {
+        if (number < 0) {
+            return Integer.MAX_VALUE;
+        }
+        return number;
+    }
+
+    public int validateCityId(int index, Scanner sc) {
         while (index < 0 || index >= 24) {
             System.out.println("Cidade não existe!! Tente novamente!!");
             String cityId = sc.nextLine();
